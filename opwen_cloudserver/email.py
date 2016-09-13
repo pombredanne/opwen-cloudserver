@@ -1,4 +1,8 @@
+from base64 import b64encode
+from mimetypes import guess_type
+
 from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Attachment
 from sendgrid.helpers.mail import Content
 from sendgrid.helpers.mail import Email
 from sendgrid.helpers.mail import Mail
@@ -68,4 +72,30 @@ class SendGrid(object):
         for recipient in recipients:
             mail.personalizations[0].add_to(Email(recipient))
 
+        for attached in email.get('attachments', []):
+            mail.add_attachment(cls._create_attachment(
+                attached.get('filename'),
+                attached.get('relativepath')))
+
         return mail
+
+    @classmethod
+    def _create_attachment(cls, filename, filepath):
+        """
+        :type filename: str
+        :type filepath: str
+        :rtype: Attachment
+
+        """
+        attachment = Attachment()
+
+        attachment.set_disposition('attachment')
+        attachment.set_filename(filename)
+        attachment.set_content_id(filename)
+        attachment.set_type(guess_type(filename)[0])
+
+        with open(filepath, 'rb') as fobj:
+            content = b64encode(fobj.read()).decode('utf-8')
+            attachment.set_content(content)
+
+        return attachment
