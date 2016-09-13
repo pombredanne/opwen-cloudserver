@@ -58,9 +58,14 @@ class SendGrid(object):
         :rtype Mail
 
         """
-        mail = Mail(to_email=Email(email.get('to')[0]),
+        recipients = set(email.get('to'))
+
+        mail = Mail(to_email=Email(recipients.pop()),
                     from_email=Email(email.get('from')),
                     subject=email.get('subject'),
                     content=Content('text/html', email.get('body')))
+
+        for recipient in recipients:
+            mail.personalizations[0].add_to(Email(recipient))
 
         return mail
