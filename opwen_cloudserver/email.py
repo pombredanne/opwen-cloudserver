@@ -1,3 +1,5 @@
+from abc import ABCMeta
+from abc import abstractmethod
 from base64 import b64encode
 from mimetypes import guess_type
 
@@ -8,7 +10,17 @@ from sendgrid.helpers.mail import Email
 from sendgrid.helpers.mail import Mail
 
 
-class SendGrid(object):
+class EmailSender(metaclass=ABCMeta):
+    @abstractmethod
+    def send_email(self, email):
+        """
+        :type email: dict
+
+        """
+        raise NotImplementedError
+
+
+class SendGrid(EmailSender):
     def __init__(self, apikey):
         """
         :type apikey: str
@@ -17,10 +29,6 @@ class SendGrid(object):
         self._sendgrid = SendGridAPIClient(apikey=apikey)
 
     def send_email(self, email):
-        """
-        :type email: dict
-
-        """
         email = self._create_email(email)
         response = self._send_email(email)
         success = self._check_success(response)

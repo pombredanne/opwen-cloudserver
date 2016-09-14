@@ -1,3 +1,4 @@
+from abc import abstractproperty, ABCMeta
 from os import remove
 from tempfile import NamedTemporaryFile
 from unittest import TestCase
@@ -9,17 +10,24 @@ from config import Config
 from opwen_cloudserver.email import SendGrid
 
 
-@skipUnless(Config.RUN_INTEGRATION_TESTS, 'integration tests disabled')
-class TestSendGrid(TestCase):
+# noinspection PyAttributeOutsideInit,PyPep8Naming,PyUnresolvedReferences
+class EmailSenderTestCase(metaclass=ABCMeta):
     recipient1 = 'clemens.wolff+sendgridtest@gmail.com'
     recipient2 = 'clemens.wolff+sendgridtest2@gmail.com'
+
+    @abstractproperty
+    def email_sender(self):
+        """
+        :rtype: opwen_cloudserver.email.EmailSender
+
+        """
+        raise NotImplementedError
 
     @property
     def sender(self):
         return '{}@{}'.format(self.__class__.__name__, Config.EMAIL_HOST)
 
     def setUp(self):
-        self.sendgrid = SendGrid(Config.EMAIL_ACCOUNT_KEY)
         self._files_created = set()
 
     def tearDown(self):
@@ -41,7 +49,7 @@ class TestSendGrid(TestCase):
         return relpath(path_created)
 
     def test_send_email(self):
-        success = self.sendgrid.send_email({
+        success = self.email_sender.send_email({
             'to': [self.recipient1],
             'from': self.sender,
             'subject': self.test_send_email.__name__,
@@ -51,7 +59,7 @@ class TestSendGrid(TestCase):
         self.assertTrue(success)
 
     def test_send_email_with_attachments(self):
-        success = self.sendgrid.send_email({
+        success = self.email_sender.send_email({
             'to': [self.recipient1],
             'from': self.sender,
             'subject': self.test_send_email_with_attachments.__name__,
@@ -66,7 +74,7 @@ class TestSendGrid(TestCase):
         self.assertTrue(success)
 
     def test_send_email_to_multiple_recipients(self):
-        success = self.sendgrid.send_email({
+        success = self.email_sender.send_email({
             'to': [self.recipient1, self.recipient2],
             'from': self.sender,
             'subject': self.test_send_email_to_multiple_recipients.__name__,
@@ -74,3 +82,8 @@ class TestSendGrid(TestCase):
         })
 
         self.assertTrue(success)
+
+
+@skipUnless(Config.RUN_INTEGRATION_TESTS, 'integration tests disabled')
+class TestSendGrid(EmailSenderTestCase, TestCase):
+    email_sender = SendGrid(Config.EMAIL_ACCOUNT_KEY)
