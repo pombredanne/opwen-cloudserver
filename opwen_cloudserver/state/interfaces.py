@@ -9,6 +9,7 @@ class AccountsStore(metaclass=ABCMeta):
         :type client_name: str
         :type email_or_username: str
         :rtype: str
+        :raises ValueError if the user does not have an account
 
         """
         raise NotImplementedError
@@ -18,6 +19,7 @@ class AccountsStore(metaclass=ABCMeta):
         :type client_name: str
         :type username: str
         :rtype: str
+        :raises ValueError if the user's account already exists
 
         """
         raise NotImplementedError
