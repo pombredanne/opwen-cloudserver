@@ -1,15 +1,25 @@
-from abc import abstractproperty, ABCMeta
+from abc import abstractproperty
 from os import remove
 from tempfile import NamedTemporaryFile
 
 from os.path import relpath
+from unittest import TestCase
 
 from config import Config
 
-# noinspection PyAttributeOutsideInit,PyPep8Naming,PyUnresolvedReferences
-class TestEmailSender(metaclass=ABCMeta):
+
+class TestEmailSender(TestCase):
     recipient1 = 'clemens.wolff+sendgridtest@gmail.com'
     recipient2 = 'clemens.wolff+sendgridtest2@gmail.com'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = None
+        if self.__class__ != TestEmailSender:
+            # noinspection PyUnresolvedReferences
+            self.run = TestCase.run.__get__(self, self.__class__)
+        else:
+            self.run = lambda this, *ar, **kw: None
 
     @abstractproperty
     def email_sender(self):

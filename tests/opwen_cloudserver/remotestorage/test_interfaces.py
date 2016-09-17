@@ -1,10 +1,18 @@
-from abc import ABCMeta
 from abc import abstractproperty
 from os import path
+from unittest import TestCase
 
 
-# noinspection PyUnresolvedReferences,PyPep8Naming
-class TestRemoteStorage(metaclass=ABCMeta):
+class TestRemoteStorage(TestCase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = None
+        if self.__class__ != TestRemoteStorage:
+            # noinspection PyUnresolvedReferences
+            self.run = TestCase.run.__get__(self, self.__class__)
+        else:
+            self.run = lambda this, *ar, **kw: None
+
     @abstractproperty
     def remote_storage(self):
         """

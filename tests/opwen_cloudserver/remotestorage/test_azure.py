@@ -1,4 +1,3 @@
-from unittest import TestCase
 from unittest import skipUnless
 
 from config import Config
@@ -7,7 +6,7 @@ from tests.opwen_cloudserver.remotestorage.test_interfaces import TestRemoteStor
 
 
 @skipUnless(Config.RUN_INTEGRATION_TESTS, 'integration tests disabled')
-class TestAzureRemoteStorage(TestRemoteStorage, TestCase):
+class TestAzureRemoteStorage(TestRemoteStorage):
     @property
     def remote_storage(self):
         return AzureRemoteStorage(
