@@ -52,7 +52,12 @@ class InMemoryAccountsStore(AccountsStore):
         self._email_host = email_host
 
     def get(self, client_name, user):
-        return self._store[client_name].get(user, user)
+        email = self._store[client_name].get(user)
+        if email:
+            return email
+        if '@' not in user:
+            raise ValueError
+        return user
 
     def create(self, client_name, username):
         if username in self._store[client_name]:
