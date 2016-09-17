@@ -1,4 +1,3 @@
-import json
 from abc import ABCMeta
 from abc import abstractmethod
 from collections import defaultdict
@@ -12,6 +11,7 @@ from zipfile import ZIP_DEFLATED
 from zipfile import ZipFile
 
 from azure.storage.blob import BlockBlobService
+from jsonlines import jsonlines
 
 
 # noinspection PyClassHasNoInit
@@ -189,19 +189,18 @@ class FakeRemoteStorage(RemoteStorage):
         self._downloads.pop(root, None)
 
 
-def _load_jsonl(filepath, encoding='utf-8'):
+def _load_jsonl(filepath):
     """
     :type filepath: str
-    :type encoding: str
     :rtype: collections.Iterable[dict]
 
     """
     if not path.isfile(filepath):
         return
 
-    with open(filepath, 'rb') as jsonl:
-        for line in jsonl:
-            yield json.loads(line.decode(encoding))
+    with jsonlines.open(filepath) as fobj:
+        for line in fobj:
+            yield line
 
 
 def _safepop(d, key):
