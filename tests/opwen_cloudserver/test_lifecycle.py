@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-from opwen_cloudserver.email.fake import FakeEmailSender
 from opwen_cloudserver.lifecycle import ReadDataFromClients
-from opwen_cloudserver.remotestorage.fake import FakeRemoteStorage
-from opwen_cloudserver.state.fake import InMemoryDeliveredEmailsStore
-from opwen_cloudserver.state.fake import InMemoryAccountsStore
+from tests.utils.fakes import FakeEmailSender
+from tests.utils.fakes import FakeRemoteStorage
+from tests.utils.fakes import InMemoryAccountsStore
+from tests.utils.fakes import InMemoryDeliveredEmailsStore
 
 
 class TestLifecycle(TestCase):
