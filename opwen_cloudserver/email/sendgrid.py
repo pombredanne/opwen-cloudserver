@@ -10,7 +10,7 @@ from sendgrid.helpers.mail import Mail
 from opwen_cloudserver.email import EmailSender
 
 
-class SendGrid(EmailSender):
+class SendGridEmailSender(EmailSender):
     def __init__(self, apikey):
         """
         :type apikey: str

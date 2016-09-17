@@ -5,7 +5,7 @@ from unittest import TestCase
 from unittest import skipUnless
 
 from config import Config
-from opwen_cloudserver.remotestorage.azure import StorageForUploadsFromOpwen
+from opwen_cloudserver.remotestorage.azure import AzureRemoteStorage
 
 
 # noinspection PyUnresolvedReferences,PyPep8Naming
@@ -61,7 +61,7 @@ class RemoteStorageTestCase(metaclass=ABCMeta):
 class TestStorageForUploadsFromOpwen(RemoteStorageTestCase, TestCase):
     @property
     def remote_storage(self):
-        return StorageForUploadsFromOpwen(
+        return AzureRemoteStorage(
             account_name=Config.STORAGE_ACCOUNT_NAME,
             account_key=Config.STORAGE_ACCOUNT_KEY,
             container=Config.STORAGE_ACCOUNT_CONTAINER)

@@ -14,7 +14,7 @@ from opwen_cloudserver.remotestorage import DownloadResult
 from opwen_cloudserver.remotestorage import RemoteStorage
 
 
-class StorageForUploadsFromOpwen(RemoteStorage):
+class AzureRemoteStorage(RemoteStorage):
     _upload_prefix = 'from_opwen'
 
     def __init__(self, account_name, account_key, container):

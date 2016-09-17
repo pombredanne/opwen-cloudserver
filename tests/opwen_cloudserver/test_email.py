@@ -7,7 +7,7 @@ from unittest import skipUnless
 from os.path import relpath
 
 from config import Config
-from opwen_cloudserver.email.sendgrid import SendGrid
+from opwen_cloudserver.email.sendgrid import SendGridEmailSender
 
 
 # noinspection PyAttributeOutsideInit,PyPep8Naming,PyUnresolvedReferences
@@ -86,4 +86,4 @@ class EmailSenderTestCase(metaclass=ABCMeta):
 
 @skipUnless(Config.RUN_INTEGRATION_TESTS, 'integration tests disabled')
 class TestSendGrid(EmailSenderTestCase, TestCase):
-    email_sender = SendGrid(Config.EMAIL_ACCOUNT_KEY)
+    email_sender = SendGridEmailSender(Config.EMAIL_ACCOUNT_KEY)
