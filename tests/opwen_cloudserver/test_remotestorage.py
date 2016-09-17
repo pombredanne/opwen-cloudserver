@@ -5,7 +5,7 @@ from unittest import TestCase
 from unittest import skipUnless
 
 from config import Config
-from opwen_cloudserver.remotestorage import StorageForUploadsFromOpwen
+from opwen_cloudserver.remotestorage.azure import StorageForUploadsFromOpwen
 
 
 # noinspection PyUnresolvedReferences,PyPep8Naming

@@ -1,5 +1,3 @@
-from abc import ABCMeta
-from abc import abstractmethod
 from base64 import b64encode
 from mimetypes import guess_type
 
@@ -9,24 +7,7 @@ from sendgrid.helpers.mail import Content
 from sendgrid.helpers.mail import Email
 from sendgrid.helpers.mail import Mail
 
-
-class EmailSender(metaclass=ABCMeta):
-    @abstractmethod
-    def send_email(self, email):
-        """
-        :type email: dict
-
-        """
-        raise NotImplementedError
-
-
-class FakeEmailSender(EmailSender):
-    def __init__(self):
-        self.sent = []
-
-    def send_email(self, email):
-        self.sent.append(email)
-        return True
+from opwen_cloudserver.email import EmailSender
 
 
 class SendGrid(EmailSender):

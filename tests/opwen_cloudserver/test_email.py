@@ -7,7 +7,7 @@ from unittest import skipUnless
 from os.path import relpath
 
 from config import Config
-from opwen_cloudserver.email import SendGrid
+from opwen_cloudserver.email.sendgrid import SendGrid
 
 
 # noinspection PyAttributeOutsideInit,PyPep8Naming,PyUnresolvedReferences

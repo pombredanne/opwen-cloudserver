@@ -1,7 +1,4 @@
-from abc import ABCMeta
-from abc import abstractmethod
 from collections import defaultdict
-from collections import namedtuple
 from contextlib import contextmanager
 from os import path
 from shutil import rmtree
@@ -13,38 +10,8 @@ from zipfile import ZipFile
 from azure.storage.blob import BlockBlobService
 from jsonlines import jsonlines
 
-
-# noinspection PyClassHasNoInit
-class DownloadResult(namedtuple('DownloadResult',
-                                'accounts emails')):
-    pass
-
-
-class RemoteStorage(metaclass=ABCMeta):
-    @abstractmethod
-    def list_roots(self):
-        """
-        :rtype collections.Iterable[str]
-
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def download(self, root):
-        """
-        :type root: str
-        :rtype DownloadResult
-
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def delete(self, root):
-        """
-        :type root: str
-
-        """
-        raise NotImplementedError
+from opwen_cloudserver.remotestorage import DownloadResult
+from opwen_cloudserver.remotestorage import RemoteStorage
 
 
 class StorageForUploadsFromOpwen(RemoteStorage):
@@ -166,27 +133,6 @@ class StorageForUploadsFromOpwen(RemoteStorage):
         yield scratch_directory
         self._processed_blob_names[root].add(blobname)
         self._processed_local_directories[root].add(scratch_directory)
-
-
-class FakeRemoteStorage(RemoteStorage):
-    def __init__(self, downloads):
-        """
-        :type downloads: dict[str, dict[str, list]]
-
-        """
-        self._roots = sorted(downloads.keys())
-        self._downloads = downloads
-
-    def list_roots(self):
-        return self._roots
-
-    def download(self, root):
-        return DownloadResult(
-            emails=self._downloads.get(root, {}).get('emails', []),
-            accounts=self._downloads.get(root, {}).get('accounts', []))
-
-    def delete(self, root):
-        self._downloads.pop(root, None)
 
 
 def _load_jsonl(filepath):
