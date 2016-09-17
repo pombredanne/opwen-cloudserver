@@ -20,6 +20,15 @@ class EmailSender(metaclass=ABCMeta):
         raise NotImplementedError
 
 
+class FakeEmailSender(EmailSender):
+    def __init__(self):
+        self.sent = []
+
+    def send_email(self, email):
+        self.sent.append(email)
+        return True
+
+
 class SendGrid(EmailSender):
     def __init__(self, apikey):
         """
