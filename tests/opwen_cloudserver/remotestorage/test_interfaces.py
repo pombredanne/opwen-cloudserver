@@ -1,15 +1,10 @@
 from abc import ABCMeta
 from abc import abstractproperty
 from os import path
-from unittest import TestCase
-from unittest import skipUnless
-
-from config import Config
-from opwen_cloudserver.remotestorage.azure import AzureRemoteStorage
 
 
 # noinspection PyUnresolvedReferences,PyPep8Naming
-class RemoteStorageTestCase(metaclass=ABCMeta):
+class TestRemoteStorage(metaclass=ABCMeta):
     @abstractproperty
     def remote_storage(self):
         """
@@ -55,13 +50,3 @@ class RemoteStorageTestCase(metaclass=ABCMeta):
         self.assertIsNotNone(downloaded.accounts)
         self.assertIsNotEmpty(downloaded.emails)
         self.assertAllAttachmentsExist(downloaded.emails)
-
-
-@skipUnless(Config.RUN_INTEGRATION_TESTS, 'integration tests disabled')
-class TestStorageForUploadsFromOpwen(RemoteStorageTestCase, TestCase):
-    @property
-    def remote_storage(self):
-        return AzureRemoteStorage(
-            account_name=Config.STORAGE_ACCOUNT_NAME,
-            account_key=Config.STORAGE_ACCOUNT_KEY,
-            container=Config.STORAGE_ACCOUNT_CONTAINER)
