@@ -1,3 +1,4 @@
+import json
 from abc import ABCMeta
 from abc import abstractmethod
 
@@ -66,3 +67,12 @@ class DeliveredEmailsStore(metaclass=ABCMeta):
 
         """
         raise NotImplementedError
+
+    @classmethod
+    def _hash_email(cls, email):
+        """
+        :type email: dict
+        :rtype: int
+
+        """
+        return hash(json.dumps(email, sort_keys=True))

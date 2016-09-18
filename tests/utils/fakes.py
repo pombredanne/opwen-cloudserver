@@ -1,4 +1,3 @@
-import json
 from collections import defaultdict
 
 from opwen_cloudserver.email import EmailSender
@@ -82,12 +81,3 @@ class InMemoryDeliveredEmailsStore(DeliveredEmailsStore):
     def contains(self, client_name, email):
         email = self._hash_email(email)
         return self._store[client_name][email]
-
-    @classmethod
-    def _hash_email(cls, email):
-        """
-        :type email: dict
-        :rtype: int
-
-        """
-        return hash(json.dumps(email, sort_keys=True))
