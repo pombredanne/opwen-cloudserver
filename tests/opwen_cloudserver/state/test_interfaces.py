@@ -32,9 +32,9 @@ class Base(object):
                 self.store.get(self.test_client, self.test_user)
 
         def test_create_with_existing(self):
-            self.store.create(self.test_client, self.test_user)
-            with self.assertRaises(ValueError):
-                self.store.create(self.test_client, self.test_user)
+            retrieved1 = self.store.create(self.test_client, self.test_user)
+            retrieved2 = self.store.create(self.test_client, self.test_user)
+            self.assertEqual(retrieved1, retrieved2)
 
     class TestDeliveredEmailsStore(TestCase):
         test_client = 'test-client'

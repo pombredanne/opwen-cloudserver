@@ -20,7 +20,6 @@ class AccountsStore(metaclass=ABCMeta):
         :type client_name: str
         :type username: str
         :rtype: str
-        :raises ValueError if the user's account already exists
 
         """
         raise NotImplementedError

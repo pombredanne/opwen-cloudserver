@@ -86,7 +86,7 @@ class SqlAccountsStore(AccountsStore, _BaseSqlStore):
         try:
             self._session.commit()
         except IntegrityError:
-            raise ValueError
+            self._session.rollback()
 
         return email
 

@@ -59,8 +59,9 @@ class InMemoryAccountsStore(AccountsStore):
         return user
 
     def create(self, client_name, username):
-        if username in self._store[client_name]:
-            raise ValueError
+        email = self._store[client_name].get(username)
+        if email:
+            return email
 
         email = self._format_email(client_name, username, self._email_host)
         self._store[client_name][username] = email
