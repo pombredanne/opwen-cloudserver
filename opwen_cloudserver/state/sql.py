@@ -1,4 +1,5 @@
 from sqlalchemy import Column
+from sqlalchemy import DateTime
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import and_
@@ -21,6 +22,7 @@ class _Account(_Base):
     client = Column(String(64), nullable=False, index=True)
     user = Column(String(256), nullable=False, index=True)
     email = Column(String(256), nullable=False, index=True, unique=True)
+    delivered_utc = Column(DateTime(), nullable=True, index=True)
 
 
 class _DeliveredEmail(_Base):
@@ -79,6 +81,7 @@ class SqlAccountsStore(AccountsStore, _BaseSqlStore):
             host=self._email_host)
 
         self._session.add(_Account(
+            delivered_utc=None,
             client=client_name.lower(),
             user=username.lower(),
             email=email.lower()))
