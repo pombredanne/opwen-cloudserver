@@ -52,7 +52,7 @@ class Base(object):
                 'to': [self.recipient1],
                 'from': self.sender,
                 'subject': self.test_send_email.__name__,
-                'body': 'simple email with <b>formatting</b>',
+                'message': 'simple email with <b>formatting</b>',
             })
 
             self.assertTrue(success)
@@ -62,7 +62,7 @@ class Base(object):
                 'to': [self.recipient1],
                 'from': self.sender,
                 'subject': self.test_send_email_with_attachments.__name__,
-                'body': 'simple email with attachments',
+                'message': 'simple email with attachments',
                 'attachments': [
                     {'filename': 'Some file.txt',
                      'relativepath': self._create_text_file('first file')},
@@ -77,7 +77,7 @@ class Base(object):
                 'to': [self.recipient1, self.recipient2],
                 'from': self.sender,
                 'subject': self.test_send_email_to_multiple_recipients.__name__,
-                'body': 'simple email with two recipients',
+                'message': 'simple email with two recipients',
             })
 
             self.assertTrue(success)

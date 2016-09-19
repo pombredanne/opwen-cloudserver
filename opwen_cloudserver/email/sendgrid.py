@@ -65,7 +65,7 @@ class SendGridEmailSender(EmailSender):
         mail = Mail(to_email=Email(recipients.pop()),
                     from_email=Email(email.get('from')),
                     subject=email.get('subject'),
-                    content=Content('text/html', email.get('body')))
+                    content=Content('text/html', email.get('message')))
 
         for recipient in recipients:
             mail.personalizations[0].add_to(Email(recipient))
