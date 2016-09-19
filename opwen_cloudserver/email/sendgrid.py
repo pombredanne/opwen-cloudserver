@@ -1,6 +1,7 @@
 from base64 import b64encode
 from mimetypes import guess_type
 
+from urllib.error import HTTPError
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Attachment
 from sendgrid.helpers.mail import Content
@@ -31,26 +32,36 @@ class SendGridEmailSender(EmailSender):
     def _send_email(self, email):
         """
         :type email: Mail
-        :rtype: requests.Response
+        :rtype: requests.Response | HTTPError
 
         """
-        return self._sendgrid.client.mail.send.post(request_body=email.get())
+        request = email.get()
+        try:
+            return self._sendgrid.client.mail.send.post(request_body=request)
+        except HTTPError as exception:
+            return exception
 
     @classmethod
     def _handle_error(cls, response):
         """
-        :type response: requests.Response
+        :type response: requests.Response | HTTPError
 
         """
         # TODO: handle error properly
-        print('{}: {}'.format(response.status_code, response.headers))
+        if isinstance(response, HTTPError):
+            print('{}: {}'.format(response.__class__.__name__, response.read()))
+        else:
+            print('{}: {}'.format(response.status_code, response.headers))
 
     @classmethod
     def _check_success(cls, response):
         """
-        :type response: requests.Response
+        :type response: requests.Response | HTTPError
 
         """
+        if isinstance(response, HTTPError):
+            return False
+
         return response.status_code == 202
 
     @classmethod
