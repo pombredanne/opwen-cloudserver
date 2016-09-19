@@ -1,4 +1,5 @@
 from base64 import b64encode
+from collections import namedtuple
 from mimetypes import guess_type
 
 from urllib.error import HTTPError
@@ -9,6 +10,11 @@ from sendgrid.helpers.mail import Email
 from sendgrid.helpers.mail import Mail
 
 from opwen_cloudserver.email import EmailSender
+
+
+# noinspection PyClassHasNoInit
+class SendGridResponse(namedtuple('Response', 'status message')):
+    pass
 
 
 class SendGridEmailSender(EmailSender):
@@ -32,37 +38,38 @@ class SendGridEmailSender(EmailSender):
     def _send_email(self, email):
         """
         :type email: Mail
-        :rtype: requests.Response | HTTPError
+        :rtype: SendGridResponse
 
         """
         request = email.get()
         try:
-            return self._sendgrid.client.mail.send.post(request_body=request)
+            client = self._sendgrid.client.mail.send
+            response = client.post(request_body=request)
         except HTTPError as exception:
-            return exception
+            status = exception.code
+            message = exception.read()
+        else:
+            status = response.status_code
+            message = response.headers
+
+        return SendGridResponse(status=status, message=message)
 
     @classmethod
     def _handle_error(cls, response):
         """
-        :type response: requests.Response | HTTPError
+        :type response: SendGridResponse
 
         """
         # TODO: handle error properly
-        if isinstance(response, HTTPError):
-            print('{}: {}'.format(response.__class__.__name__, response.read()))
-        else:
-            print('{}: {}'.format(response.status_code, response.headers))
+        print('{}: {}'.format(response.status, response.message))
 
     @classmethod
     def _check_success(cls, response):
         """
-        :type response: requests.Response | HTTPError
+        :type response: SendGridResponse
 
         """
-        if isinstance(response, HTTPError):
-            return False
-
-        return response.status_code == 202
+        return response.status == 202
 
     @classmethod
     def _create_email(cls, email):
