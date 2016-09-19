@@ -1,6 +1,12 @@
 from unittest import TestCase
+from unittest import skipUnless
 
+from config import Config
+from opwen_cloudserver.email.sendgrid import SendGridEmailSender
 from opwen_cloudserver.lifecycle import ReadDataFromClients
+from opwen_cloudserver.remotestorage.azure import AzureRemoteStorage
+from opwen_cloudserver.state.sql import SqlAccountsStore
+from opwen_cloudserver.state.sql import SqlDeliveredEmailsStore
 from tests.utils.fakes import FakeEmailSender
 from tests.utils.fakes import FakeRemoteStorage
 from tests.utils.fakes import InMemoryAccountsStore
@@ -8,7 +14,24 @@ from tests.utils.fakes import InMemoryDeliveredEmailsStore
 
 
 class TestLifecycle(TestCase):
-    def test(self):
+    @skipUnless(Config.RUN_INTEGRATION_TESTS, 'integration tests disabled')
+    def test_end_to_end(self):
+        read_data_from_clients = ReadDataFromClients(
+            exchange_client=AzureRemoteStorage(
+                account_key=Config.STORAGE_ACCOUNT_KEY,
+                account_name=Config.STORAGE_ACCOUNT_NAME,
+                container=Config.STORAGE_ACCOUNT_CONTAINER),
+            email_client=SendGridEmailSender(
+                apikey=Config.EMAIL_ACCOUNT_KEY),
+            account_store=SqlAccountsStore(
+                database_uri=Config.SQLALCHEMY_DATABASE_URI,
+                email_host=Config.EMAIL_HOST),
+            delivered_store=SqlDeliveredEmailsStore(
+                database_uri=Config.SQLALCHEMY_DATABASE_URI))
+
+        read_data_from_clients()
+
+    def test_fakes(self):
         test_client, test_host = 'client1', 'thehost.ca'
         new_user, existing_user = 'koala', 'bear'
 
