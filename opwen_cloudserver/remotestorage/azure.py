@@ -56,10 +56,29 @@ class AzureRemoteStorage(RemoteStorage):
         """
         with self._mark_for_deletion(root, blobname) as root_directory:
             self._download_archive(blobname, root_directory)
-            accounts = self._load_accounts(root_directory)
-            emails = self._load_emails(root_directory)
+            download_result = self._load_archive(root_directory)
 
-        return DownloadResult(accounts, emails)
+        return download_result
+
+    @classmethod
+    def _load_archive(cls, from_directory):
+        """
+        :type from_directory: str
+        :rtype: DownloadResult
+
+        """
+        emails = []
+        accounts = set()
+
+        for email in cls._load_emails(from_directory):
+            emails.append(email)
+
+            sender = email['from']
+            if '@' not in sender:
+                accounts.add(sender)
+
+        accounts = [{'name': name} for name in accounts]
+        return DownloadResult(accounts=accounts, emails=emails)
 
     @classmethod
     def _load_emails(cls, from_directory):
@@ -71,16 +90,6 @@ class AzureRemoteStorage(RemoteStorage):
         emails_path = path.join(from_directory, 'emails.jsonl')
         emails = _load_jsonl(emails_path)
         return cls._fixup_emails(from_directory, emails)
-
-    @classmethod
-    def _load_accounts(cls, from_directory):
-        """
-        :type from_directory: str
-        :rtype: collections.Iterable[dict]
-
-        """
-        accounts_path = path.join(from_directory, 'accounts.jsonl')
-        return _load_jsonl(accounts_path)
 
     @classmethod
     def _fixup_emails(cls, from_directory, emails):
