@@ -72,10 +72,13 @@ class TestLifecycle(TestCase):
 
         email_client = FakeEmailSender()
 
-        action = ReadDataFromClients(exchange_client, email_client,
-                                     account_store, delivered_store)
+        read_data_from_clients = ReadDataFromClients(
+            exchange_client=exchange_client,
+            email_client=email_client,
+            account_store=account_store,
+            delivered_store=delivered_store)
 
-        action()
+        read_data_from_clients()
 
         self.assertNotIn(already_delivered_email, email_client.sent)
         self.assertEqual(2, len(email_client.sent))
