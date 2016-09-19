@@ -3,7 +3,7 @@ from unittest import skipUnless
 
 from config import Config
 from opwen_cloudserver.email.sendgrid import SendGridEmailSender
-from opwen_cloudserver.lifecycle import ReadDataFromClients
+from opwen_cloudserver.actions import ReadDataFromClients
 from opwen_cloudserver.remotestorage.azure import AzureRemoteStorage
 from opwen_cloudserver.state.sql import SqlAccountsStore
 from opwen_cloudserver.state.sql import SqlDeliveredEmailsStore
@@ -13,7 +13,7 @@ from tests.utils.fakes import InMemoryAccountsStore
 from tests.utils.fakes import InMemoryDeliveredEmailsStore
 
 
-class TestLifecycle(TestCase):
+class TestReadDataFromClients(TestCase):
     @skipUnless(Config.RUN_INTEGRATION_TESTS, 'integration tests disabled')
     def test_end_to_end(self):
         read_data_from_clients = ReadDataFromClients(
