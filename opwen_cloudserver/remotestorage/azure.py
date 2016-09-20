@@ -15,7 +15,7 @@ from opwen_cloudserver.remotestorage import RemoteStorage
 
 
 class AzureRemoteStorage(RemoteStorage):
-    _upload_prefix = 'from_opwen'
+    _download_prefix = 'from_opwen'
 
     def __init__(self, account_name, account_key, container):
         self._blob = BlockBlobService(account_name, account_key)
@@ -39,7 +39,7 @@ class AzureRemoteStorage(RemoteStorage):
         accounts = []
         emails = []
 
-        prefix = '{}/{}'.format(root, self._upload_prefix)
+        prefix = '{}/{}'.format(root, self._download_prefix)
         for blob in self._blob.list_blobs(self._container, prefix):
             download_result = self._download_blob(root, blob.name)
             accounts.extend(download_result.accounts)
