@@ -72,3 +72,25 @@ class ReadDataFromClients(object):
         """
         self._exchange_client.delete(client_name)
         self._delivered_store.delete(client_name)
+
+
+class ReceiveEmail(object):
+    def __init__(self, email_receiver, received_emails_store):
+        """
+        :type email_receiver: opwen_cloudserver.services.email.EmailReceiver
+        :type received_emails_store: opwen_cloudserver.state.ReceivedEmailsStore
+
+        """
+        self._email_receiver = email_receiver
+        self._received_emails_store = received_emails_store
+
+    def __call__(self, request):
+        """
+        :type request: flask.Request
+        :rtype: bool
+
+        """
+        email = self._email_receiver.parse_email(request)
+        self._received_emails_store.add(email)
+        # TODO: handle errors
+        return True
