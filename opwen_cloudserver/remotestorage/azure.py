@@ -117,8 +117,8 @@ class AzureRemoteStorage(RemoteStorage):
 
     def _download_archive(self, from_blobname, to_directory):
         """
-        :tryp from_blobname: str
-        :tryp to_directory: str
+        :type from_blobname: str
+        :type to_directory: str
 
         """
         to_path = path.join(to_directory, str(uuid4()))
