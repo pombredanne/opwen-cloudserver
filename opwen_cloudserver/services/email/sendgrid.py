@@ -13,7 +13,7 @@ from opwen_cloudserver.services.email import EmailSender
 
 
 # noinspection PyClassHasNoInit
-class SendGridResponse(namedtuple('Response', 'status message')):
+class _SendGridResponse(namedtuple('Response', 'status message')):
     pass
 
 
@@ -38,7 +38,7 @@ class SendGridEmailSender(EmailSender):
     def _send_email(self, email):
         """
         :type email: Mail
-        :rtype: SendGridResponse
+        :rtype: _SendGridResponse
 
         """
         request = email.get()
@@ -52,12 +52,12 @@ class SendGridEmailSender(EmailSender):
             status = response.status_code
             message = response.headers
 
-        return SendGridResponse(status=status, message=message)
+        return _SendGridResponse(status=status, message=message)
 
     @classmethod
     def _handle_error(cls, response):
         """
-        :type response: SendGridResponse
+        :type response: _SendGridResponse
 
         """
         # TODO: handle error properly
@@ -66,7 +66,7 @@ class SendGridEmailSender(EmailSender):
     @classmethod
     def _check_success(cls, response):
         """
-        :type response: SendGridResponse
+        :type response: _SendGridResponse
 
         """
         return response.status == 202
