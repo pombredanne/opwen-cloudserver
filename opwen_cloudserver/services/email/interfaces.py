@@ -10,3 +10,14 @@ class EmailSender(metaclass=ABCMeta):
 
         """
         raise NotImplementedError
+
+
+class EmailReceiver(metaclass=ABCMeta):
+    @abstractmethod
+    def parse_email(self, request):
+        """
+        :type request: flask.Request
+        :rtype: dict
+
+        """
+        raise NotImplementedError

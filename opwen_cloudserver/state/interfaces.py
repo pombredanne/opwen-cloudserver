@@ -39,6 +39,35 @@ class AccountsStore(metaclass=ABCMeta):
             host=host)
 
 
+class ReceivedEmailsStore(metaclass=ABCMeta):
+    @abstractmethod
+    def add(self, email):
+        """
+        :type email: dict
+
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def _parse_clients(cls, email, host):
+        """
+        :type email: dict
+        :type host: str
+        :rtype: collections.Iterable[str]
+
+        """
+        recipients = email.get('to', [])
+        for recipient in recipients:
+            host_index = recipient.find(host)
+            if host_index == -1:
+                continue
+            at_index = recipient.find('@')
+            if at_index == -1:
+                continue
+            client = recipient[at_index+1:host_index-1]
+            yield client
+
+
 class DeliveredEmailsStore(metaclass=ABCMeta):
     @abstractmethod
     def contains(self, client_name, email):

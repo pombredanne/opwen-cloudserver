@@ -4,17 +4,40 @@ from mimetypes import guess_type
 from urllib.error import HTTPError
 
 from sendgrid import SendGridAPIClient
+from sendgrid.helpers.inbound import Parse
 from sendgrid.helpers.mail import Attachment
 from sendgrid.helpers.mail import Content
 from sendgrid.helpers.mail import Email
 from sendgrid.helpers.mail import Mail
 
+from opwen_cloudserver.services.email import EmailReceiver
 from opwen_cloudserver.services.email import EmailSender
 
 
 # noinspection PyClassHasNoInit
 class _SendGridResponse(namedtuple('Response', 'status message')):
     pass
+
+
+# noinspection PyClassHasNoInit
+class _SendGridParseConfig(namedtuple('Config', 'keys')):
+    pass
+
+
+class SendGridEmailReceiver(EmailReceiver):
+    def __init__(self, keys_to_parse):
+        """
+        :type keys_to_parse: list[str]
+
+        """
+        self._config = _SendGridParseConfig(keys=keys_to_parse)
+
+    def parse_email(self, request):
+        parse = Parse(self._config, request)
+        # TODO: convert to dictionary
+        email = dict(parse.key_values())
+        email['to'] = [email['to']]
+        return email
 
 
 class SendGridEmailSender(EmailSender):

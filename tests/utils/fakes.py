@@ -6,6 +6,7 @@ from opwen_cloudserver.services.remotestorage import RemoteStorage
 from opwen_cloudserver.services.email import EmailSender
 from opwen_cloudserver.state import AccountsStore
 from opwen_cloudserver.state import DeliveredEmailsStore
+from opwen_cloudserver.state.interfaces import ReceivedEmailsStore
 
 
 class FakeEmailSender(EmailSender):
@@ -83,3 +84,16 @@ class InMemoryDeliveredEmailsStore(DeliveredEmailsStore):
     def contains(self, client_name, email):
         email = self._hash_email(email)
         return self._store[client_name][email]
+
+
+class FakeReceivedEmailsStore(ReceivedEmailsStore):
+    def __init__(self, email_host):
+        """
+        :type email_host: str
+
+        """
+        self._email_host = email_host
+
+    def add(self, email):
+        for client in self._parse_clients(email, self._email_host):
+            print('received for client {}: {}'.format(client, email))

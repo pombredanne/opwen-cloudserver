@@ -19,3 +19,23 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(state_basedir, 'opwen.db')
     SQLALCHEMY_MIGRATE_REPO = path.join(app_basedir, 'db_repository')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    SENDGRID_KEYS_TO_PARSE = (
+        'from',
+        'attachments',
+        'headers',
+        'text',
+        'envelope',
+        'to',
+        'html',
+        'sender_ip',
+        'attachment-info',
+        'subject',
+        'dkim',
+        'SPF',
+        'charsets',
+        'content-ids',
+        'spam_report',
+        'spam_score',
+        'email',
+    )
