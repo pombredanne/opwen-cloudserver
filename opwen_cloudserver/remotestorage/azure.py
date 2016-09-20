@@ -16,6 +16,8 @@ from opwen_cloudserver.remotestorage import RemoteStorage
 
 class AzureRemoteStorage(RemoteStorage):
     _download_prefix = 'from_opwen'
+    _emails_name = 'emails.jsonl'
+    _accounts_name = 'accounts.jsonl'
 
     def __init__(self, account_name, account_key, container):
         self._blob = BlockBlobService(account_name, account_key)
@@ -87,7 +89,7 @@ class AzureRemoteStorage(RemoteStorage):
         :rtype: collections.Iterable[dict]
 
         """
-        emails_path = path.join(from_directory, 'emails.jsonl')
+        emails_path = path.join(from_directory, cls._emails_name)
         emails = _load_jsonl(emails_path)
         return cls._fixup_emails(from_directory, emails)
 
