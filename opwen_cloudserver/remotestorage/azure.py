@@ -55,7 +55,7 @@ class AzureRemoteStorage(RemoteStorage):
 
         """
         with self._mark_for_deletion(root, blobname) as root_directory:
-            self._download_archive(blobname, root_directory)
+            self._download_archive(root, blobname, root_directory)
             download_result = self._load_archive(root_directory)
 
         return download_result
@@ -115,23 +115,35 @@ class AzureRemoteStorage(RemoteStorage):
         if relativepath:
             attachment['relativepath'] = path.join(from_directory, relativepath)
 
-    def _download_archive(self, from_blobname, to_directory):
+    def _download_archive(self, root, from_blobname, to_directory):
         """
+        :type root: str
         :type from_blobname: str
         :type to_directory: str
 
         """
-        to_path = path.join(to_directory, str(uuid4()))
+        with self._mark_file_for_deletion(root, '.zip') as to_path:
+            self._blob.get_blob_to_path(self._container, from_blobname, to_path)
 
-        self._blob.get_blob_to_path(self._container, from_blobname, to_path)
-
-        with ZipFile(to_path, 'r', ZIP_DEFLATED) as archive:
-            archive.extractall(to_directory)
+            with ZipFile(to_path, 'r', ZIP_DEFLATED) as archive:
+                archive.extractall(to_directory)
 
         return to_path
 
     @contextmanager
-    def _mark_for_deletion(self, root, blobname):
+    def _mark_file_for_deletion(self, root, suffix=''):
+        """
+        :type root: str
+        :type suffix: str | None
+        :rtype: str
+
+        """
+        with self._mark_for_deletion(root) as directory:
+            filepath = path.join(directory, '{}{}'.format(uuid4(), suffix))
+            yield filepath
+
+    @contextmanager
+    def _mark_for_deletion(self, root, blobname=None):
         """
         :type root: str
         :type blobname: str | None
