@@ -134,13 +134,14 @@ class AzureRemoteStorage(RemoteStorage):
     def _mark_for_deletion(self, root, blobname):
         """
         :type root: str
-        :type blobname: str
+        :type blobname: str | None
         :rtype: str
 
         """
         scratch_directory = mkdtemp()
         yield scratch_directory
-        self._processed_blob_names[root].add(blobname)
+        if blobname:
+            self._processed_blob_names[root].add(blobname)
         self._processed_local_directories[root].add(scratch_directory)
 
 
