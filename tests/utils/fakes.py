@@ -1,8 +1,9 @@
 from collections import defaultdict
 
-from opwen_cloudserver.email import EmailSender
-from opwen_cloudserver.remotestorage import DownloadResult
-from opwen_cloudserver.remotestorage import RemoteStorage
+from opwen_cloudserver.services.remotestorage import DownloadResult
+from opwen_cloudserver.services.remotestorage import RemoteStorage
+
+from opwen_cloudserver.services.email import EmailSender
 from opwen_cloudserver.state import AccountsStore
 from opwen_cloudserver.state import DeliveredEmailsStore
 

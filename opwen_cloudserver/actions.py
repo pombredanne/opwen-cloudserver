@@ -2,8 +2,8 @@ class ReadDataFromClients(object):
     def __init__(self, exchange_client, email_client,
                  account_store, delivered_store):
         """
-        :type exchange_client: opwen_cloudserver.remotestorage.RemoteStorage
-        :type email_client: opwen_cloudserver.email.EmailSender
+        :type exchange_client: opwen_cloudserver.services.remotestorage.RemoteStorage
+        :type email_client: opwen_cloudserver.services.email.EmailSender
         :type account_store: opwen_cloudserver.state.AccountsStore
         :type delivered_store: opwen_cloudserver.state.DeliveredEmailsStore
 

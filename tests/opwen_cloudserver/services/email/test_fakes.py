@@ -1,4 +1,4 @@
-from tests.opwen_cloudserver.email.test_interfaces import Base
+from tests.opwen_cloudserver.services.email.test_interfaces import Base
 from tests.utils.fakes import FakeEmailSender
 
 

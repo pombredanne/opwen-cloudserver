@@ -1,15 +1,15 @@
 from base64 import b64encode
 from collections import namedtuple
 from mimetypes import guess_type
-
 from urllib.error import HTTPError
+
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Attachment
 from sendgrid.helpers.mail import Content
 from sendgrid.helpers.mail import Email
 from sendgrid.helpers.mail import Mail
 
-from opwen_cloudserver.email import EmailSender
+from opwen_cloudserver.services.email import EmailSender
 
 
 # noinspection PyClassHasNoInit

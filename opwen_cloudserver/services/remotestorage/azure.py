@@ -10,8 +10,8 @@ from zipfile import ZipFile
 from azure.storage.blob import BlockBlobService
 from jsonlines import jsonlines
 
-from opwen_cloudserver.remotestorage import DownloadResult
-from opwen_cloudserver.remotestorage import RemoteStorage
+from opwen_cloudserver.services.remotestorage import DownloadResult
+from opwen_cloudserver.services.remotestorage import RemoteStorage
 
 
 class AzureRemoteStorage(RemoteStorage):

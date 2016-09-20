@@ -1,10 +1,11 @@
 from unittest import TestCase
 from unittest import skipUnless
 
+from opwen_cloudserver.services.remotestorage.azure import AzureRemoteStorage
+
 from config import Config
-from opwen_cloudserver.email.sendgrid import SendGridEmailSender
 from opwen_cloudserver.actions import ReadDataFromClients
-from opwen_cloudserver.remotestorage.azure import AzureRemoteStorage
+from opwen_cloudserver.services.email.sendgrid import SendGridEmailSender
 from opwen_cloudserver.state.sql import SqlAccountsStore
 from opwen_cloudserver.state.sql import SqlDeliveredEmailsStore
 from tests.utils.fakes import FakeEmailSender

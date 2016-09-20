@@ -1,4 +1,4 @@
-from tests.opwen_cloudserver.remotestorage.test_interfaces import Base
+from tests.opwen_cloudserver.services.remotestorage.test_interfaces import Base
 from tests.utils.fakes import FakeRemoteStorage
 
 
