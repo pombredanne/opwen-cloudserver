@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
-from opwen_cloudserver import app
+from flask_script import Manager
 
-app.run(host='0.0.0.0', port=8000)
+from opwen_email_server import app
+
+manager = Manager(app)
+
+manager.run()

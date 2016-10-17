@@ -1,0 +1,63 @@
+class ReceiveEmail(object):
+    def __init__(self, email_store, email_receiver):
+        """
+        :type email_store: opwen_domain.email.EmailStore
+        :type email_receiver: opwen_domain.mailbox.EmailReceiver
+
+        """
+        self._email_store = email_store
+        self._email_receiver = email_receiver
+
+    def __call__(self, request):
+        """
+        :type request: flask.Request
+
+        """
+        received_email = self._email_receiver.parse_email(request)
+        self._email_store.create(received_email)
+
+
+class UploadEmailsToClients(object):
+    def __init__(self, email_store, email_sync):
+        """
+        :type email_store: opwen_domain.email.EmailStore
+        :type email_sync: opwen_domain.sync.Sync
+
+        """
+        self._email_store = email_store
+        self._email_sync = email_sync
+
+    def __call__(self):
+        self._email_sync.upload(self._email_store.all())
+        self._email_store.clear()
+
+
+class DownloadEmailsFromClients(object):
+    def __init__(self, email_store, email_sync):
+        """
+        :type email_store: opwen_domain.email.EmailStore
+        :type email_sync: opwen_domain.sync.Sync
+
+        """
+        self._email_store = email_store
+        self._email_sync = email_sync
+
+    def __call__(self):
+        for email in self._email_sync.download():
+            self._email_store.create(email)
+
+
+class SendEmailsFromClients(object):
+    def __init__(self, email_store, email_sender):
+        """
+        :type email_store: opwen_domain.email.EmailStore
+        :type email_sender: opwen_domain.mailbox.EmailSender
+
+        """
+        self._email_store = email_store
+        self._email_sender = email_sender
+
+    def __call__(self):
+        for email in self._email_store.all():
+            self._email_sender.send_email(email)
+        self._email_store.clear()
