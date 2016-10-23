@@ -14,7 +14,7 @@ from opwen_email_server.config import FlaskConfig
 def inbox():
     receive_email = log_execution(app.logger)(ReceiveEmail(
         email_receiver=app.ioc.email_receiver,
-        email_store=app.ioc.email_store))
+        email_store=app.ioc.received_email_store))
 
     receive_email(request)
 
