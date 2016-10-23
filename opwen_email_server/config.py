@@ -17,25 +17,6 @@ class FlaskConfig(object):
     RECEIVED_EMAIL_STORE = path.join(state_basedir, 'received-email.store')
 
     SENDGRID_ACCOUNT_KEY = getenv('OPWEN_EMAIL_ACCOUNT_KEY')
-    SENDGRID_KEYS_TO_PARSE = (
-        'from',
-        'attachments',
-        'headers',
-        'text',
-        'envelope',
-        'to',
-        'html',
-        'sender_ip',
-        'attachment-info',
-        'subject',
-        'dkim',
-        'SPF',
-        'charsets',
-        'content-ids',
-        'spam_report',
-        'spam_score',
-        'email',
-    )
 
     UPLOAD_EMAILS_TO_CLIENT_HOUR_UTC = (OpwenConfig.EMAIL_SYNC_HOUR_UTC - 1) % 24
     DOWNLOAD_CLIENT_EMAILS_HOUR_UTC = (OpwenConfig.EMAIL_SYNC_HOUR_UTC + 1) % 24
