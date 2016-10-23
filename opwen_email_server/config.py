@@ -11,7 +11,7 @@ class FlaskConfig(object):
     SECRET_KEY = getenv('OPWEN_SECRET_KEY')
     SECURITY_PASSWORD_SALT = getenv('OPWEN_PASSWORD_SALT')
 
-    TESTING = getenv('OPWEN_ENABLE_DEBUG', False)
+    TESTING = getenv('OPWEN_ENABLE_DEBUG')
 
     CLIENT_EMAIL_STORE = path.join(state_basedir, 'client-email.store')
     RECEIVED_EMAIL_STORE = path.join(state_basedir, 'received-email.store')
