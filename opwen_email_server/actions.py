@@ -14,7 +14,7 @@ class ReceiveEmail(object):
 
         """
         received_email = self._email_receiver.parse_email(request)
-        self._email_store.create(received_email)
+        self._email_store.create([received_email])
 
 
 class UploadEmailsToClients(object):
@@ -43,8 +43,8 @@ class DownloadEmailsFromClients(object):
         self._email_sync = email_sync
 
     def __call__(self):
-        for email in self._email_sync.download():
-            self._email_store.create(email)
+        emails = self._email_sync.download()
+        self._email_store.create(emails)
 
 
 class SendEmailsFromClients(object):
