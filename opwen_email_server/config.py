@@ -7,7 +7,7 @@ from opwen_infrastructure.env import getenv
 state_basedir = path.abspath(getenv('OPWEN_STATE_DIRECTORY', gettempdir()))
 
 
-class FlaskConfig(object):
+class AppConfig(OpwenConfig):
     SECRET_KEY = getenv('OPWEN_SECRET_KEY')
     SECURITY_PASSWORD_SALT = getenv('OPWEN_PASSWORD_SALT')
 

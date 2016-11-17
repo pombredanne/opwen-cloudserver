@@ -8,7 +8,7 @@ from opwen_email_server.actions import DownloadEmailsFromClients
 from opwen_email_server.actions import ReceiveEmail
 from opwen_email_server.actions import SendEmailsFromClients
 from opwen_email_server.actions import UploadEmailsToClients
-from opwen_email_server.config import FlaskConfig
+from opwen_email_server.config import AppConfig
 
 
 @app.route('/inbox', methods=['POST'])
@@ -25,7 +25,7 @@ def inbox():
 @app.before_first_request
 @log_execution(app.logger)
 def _setup_upload_emails_to_clients_cron():
-    upload_hour = str(FlaskConfig.UPLOAD_EMAILS_TO_CLIENT_HOUR_UTC)
+    upload_hour = str(AppConfig.UPLOAD_EMAILS_TO_CLIENT_HOUR_UTC)
     setup_cronjob(hour_utc=upload_hour,
                   method=_upload_emails_to_clients,
                   logger=app.logger,
@@ -35,7 +35,7 @@ def _setup_upload_emails_to_clients_cron():
 @app.before_first_request
 @log_execution(app.logger)
 def _setup_download_emails_from_clients_cron():
-    download_hour = str(FlaskConfig.DOWNLOAD_CLIENT_EMAILS_HOUR_UTC)
+    download_hour = str(AppConfig.DOWNLOAD_CLIENT_EMAILS_HOUR_UTC)
     setup_cronjob(hour_utc=download_hour,
                   method=_download_emails_from_clients,
                   logger=app.logger,
@@ -45,7 +45,7 @@ def _setup_download_emails_from_clients_cron():
 @app.before_first_request
 @log_execution(app.logger)
 def _setup_send_emails_from_clients_cron():
-    send_hour = str(FlaskConfig.SEND_CLIENT_EMAILS_HOUR_UTC)
+    send_hour = str(AppConfig.SEND_CLIENT_EMAILS_HOUR_UTC)
     setup_cronjob(hour_utc=send_hour,
                   method=_send_email_from_clients,
                   logger=app.logger,
