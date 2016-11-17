@@ -1,8 +1,8 @@
-from os import getenv
 from os import path
 from tempfile import gettempdir
 
 from opwen_domain.config import OpwenConfig
+from opwen_infrastructure.env import getenv
 
 state_basedir = path.abspath(getenv('OPWEN_STATE_DIRECTORY', gettempdir()))
 
