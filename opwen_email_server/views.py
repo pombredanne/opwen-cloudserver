@@ -61,6 +61,8 @@ def _upload_emails_to_clients():
 
     upload_emails_to_clients()
 
+    return 'OK'
+
 
 @debug_route(app, '/send')
 @log_execution(app.logger)
@@ -71,6 +73,8 @@ def _send_email_from_clients():
 
     send_emails_from_clients()
 
+    return 'OK'
+
 
 @debug_route(app, '/download')
 @log_execution(app.logger)
@@ -80,6 +84,8 @@ def _download_emails_from_clients():
         email_store=app.ioc.client_email_store)
 
     download_emails_from_clients()
+
+    return 'OK'
 
 
 @app.errorhandler(404)
