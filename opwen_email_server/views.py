@@ -80,3 +80,21 @@ def _download_emails_from_clients():
         email_store=app.ioc.client_email_store)
 
     download_emails_from_clients()
+
+
+@app.errorhandler(404)
+def _on_404(code_or_exception):
+    app.logger.error(code_or_exception)
+    return code_or_exception
+
+
+@app.errorhandler(Exception)
+def _on_exception(code_or_exception):
+    app.logger.error('%s: %s', code_or_exception.__class__.__name__, code_or_exception)
+    return code_or_exception
+
+
+@app.errorhandler(500)
+def _on_500(code_or_exception):
+    app.logger.error(code_or_exception)
+    return code_or_exception
