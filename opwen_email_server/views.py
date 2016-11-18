@@ -19,7 +19,7 @@ def inbox():
 
     receive_email(request)
 
-    return "OK"
+    return 'OK'
 
 
 @app.before_first_request
