@@ -1,3 +1,4 @@
+from logging import DEBUG
 from os import path
 from tempfile import gettempdir
 
@@ -21,3 +22,7 @@ class AppConfig(OpwenConfig):
     UPLOAD_EMAILS_TO_CLIENT_HOUR_UTC = (OpwenConfig.EMAIL_SYNC_HOUR_UTC - 1) % 24
     DOWNLOAD_CLIENT_EMAILS_HOUR_UTC = (OpwenConfig.EMAIL_SYNC_HOUR_UTC + 1) % 24
     SEND_CLIENT_EMAILS_HOUR_UTC = (DOWNLOAD_CLIENT_EMAILS_HOUR_UTC + 1) % 24
+
+    LOG_FILE = path.join(state_basedir, 'app.log')
+    LOG_FORMAT = '%(asctime)s\t%(levelname)s\t%(pathname)s:%(lineno)d\t%(message)s'
+    LOG_LEVEL = DEBUG

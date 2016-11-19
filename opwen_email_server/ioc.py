@@ -1,3 +1,6 @@
+from logging import Formatter
+from logging.handlers import TimedRotatingFileHandler
+
 from flask import Flask
 from opwen_domain.email.tinydb import TinyDbEmailStore
 from opwen_domain.mailbox.sendgrid import SendGridEmailReceiver
@@ -45,5 +48,12 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(AppConfig)
     app.ioc = Ioc()
+
+    logger = TimedRotatingFileHandler(filename=AppConfig.LOG_FILE,
+                                      when='H', interval=1, delay=True,
+                                      utc=True, encoding='utf-8')
+    logger.setFormatter(Formatter(AppConfig.LOG_FORMAT))
+    app.logger.addHandler(logger)
+    app.logger.setLevel(AppConfig.LOG_LEVEL)
 
     return app
