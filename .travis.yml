@@ -13,4 +13,4 @@ install:
 
 script:
   - mypy --silent-imports --package=opwen_email_server
-  - nosetests --with-coverage --cover-branches --cover-erase --cover-package=opwen_email_server
+  - nosetests $(find tests -name '*.py') --with-coverage --cover-branches --cover-erase --cover-package=opwen_email_server
