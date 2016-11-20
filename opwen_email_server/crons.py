@@ -8,7 +8,7 @@ from opwen_email_server.actions import UploadEmailsToClients
 from opwen_email_server.config import AppConfig
 
 
-@log_execution(app.logger)
+@log_execution(app.logger)  # type: ignore
 def setup_client_email_upload_cron():
     upload_hour = str(AppConfig.UPLOAD_EMAILS_TO_CLIENT_HOUR_UTC)
     setup_cronjob(hour_utc=upload_hour,
@@ -17,7 +17,7 @@ def setup_client_email_upload_cron():
                   description='Upload server emails to client at {} UTC'.format(upload_hour))
 
 
-@log_execution(app.logger)
+@log_execution(app.logger)  # type: ignore
 def setup_client_email_download_cron():
     download_hour = str(AppConfig.DOWNLOAD_CLIENT_EMAILS_HOUR_UTC)
     setup_cronjob(hour_utc=download_hour,
@@ -26,7 +26,7 @@ def setup_client_email_download_cron():
                   description='Download client emails to server at {} UTC'.format(download_hour))
 
 
-@log_execution(app.logger)
+@log_execution(app.logger)  # type: ignore
 def setup_client_email_send_cron():
     send_hour = str(AppConfig.SEND_CLIENT_EMAILS_HOUR_UTC)
     setup_cronjob(hour_utc=send_hour,
@@ -35,7 +35,7 @@ def setup_client_email_send_cron():
                   description='Send client emails via server at {} UTC'.format(send_hour))
 
 
-@log_execution(app.logger)
+@log_execution(app.logger)  # type: ignore
 def client_email_upload():
     upload_emails_to_clients = UploadEmailsToClients(
         email_store=app.ioc.received_email_store,
@@ -44,7 +44,7 @@ def client_email_upload():
     upload_emails_to_clients()
 
 
-@log_execution(app.logger)
+@log_execution(app.logger)  # type: ignore
 def client_email_send():
     send_emails_from_clients = SendEmailsFromClients(
         email_sender=app.ioc.email_sender,
@@ -53,7 +53,7 @@ def client_email_send():
     send_emails_from_clients()
 
 
-@log_execution(app.logger)
+@log_execution(app.logger)  # type: ignore
 def client_email_download():
     download_emails_from_clients = DownloadEmailsFromClients(
         email_sync=app.ioc.email_sync,
