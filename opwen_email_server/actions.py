@@ -14,6 +14,7 @@ class ReceiveEmail(object):
 
         """
         received_email = self._email_receiver.parse_email(request)
+        received_email['sent_at'] = None
         self._email_store.create([received_email])
 
 
@@ -28,8 +29,9 @@ class UploadEmailsToClients(object):
         self._email_sync = email_sync
 
     def __call__(self):
-        self._email_sync.upload(self._email_store.all())
-        self._email_store.clear()
+        emails = list(self._email_store.pending())
+        self._email_sync.upload(emails)
+        self._email_store.mark_sent(emails)
 
 
 class DownloadEmailsFromClients(object):
@@ -58,6 +60,7 @@ class SendEmailsFromClients(object):
         self._email_sender = email_sender
 
     def __call__(self):
-        for email in self._email_store.all():
+        emails = list(self._email_store.pending())
+        for email in emails:
             self._email_sender.send_email(email)
-        self._email_store.clear()
+        self._email_store.mark_sent(emails)
