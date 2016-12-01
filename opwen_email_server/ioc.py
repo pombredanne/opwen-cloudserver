@@ -5,7 +5,7 @@ from flask import Flask
 from opwen_domain.email.tinydb import TinyDbEmailStore
 from opwen_domain.mailbox.sendgrid import SendGridEmailReceiver
 from opwen_domain.mailbox.sendgrid import SendGridEmailSender
-from opwen_domain.sync.azure import AzureAuth
+from opwen_domain.sync.azure import AzureBlobAuth
 from opwen_domain.sync.azure import MultiClientAzureSync
 from opwen_infrastructure.serialization.json import JsonSerializer
 
@@ -25,7 +25,7 @@ class Ioc(object):
         apikey=AppConfig.SENDGRID_ACCOUNT_KEY)
 
     email_sync = MultiClientAzureSync(
-        auth=AzureAuth(
+        auth=AzureBlobAuth(
             account=AppConfig.STORAGE_ACCOUNT_NAME,
             key=AppConfig.STORAGE_ACCOUNT_KEY,
             container=AppConfig.STORAGE_CONTAINER),
