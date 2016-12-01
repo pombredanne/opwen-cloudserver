@@ -2,9 +2,11 @@ from logging import Formatter
 from logging.handlers import TimedRotatingFileHandler
 
 from flask import Flask
+from opwen_domain.email.azure import AzureEmailStore
 from opwen_domain.email.tinydb import TinyDbEmailStore
 from opwen_domain.mailbox.sendgrid import SendGridEmailReceiver
 from opwen_domain.mailbox.sendgrid import SendGridEmailSender
+from opwen_domain.sync.azure import AzureAuth
 from opwen_domain.sync.azure import AzureBlobAuth
 from opwen_domain.sync.azure import MultiClientAzureSync
 from opwen_infrastructure.serialization.json import JsonSerializer
@@ -13,11 +15,20 @@ from opwen_email_server.config import AppConfig
 
 
 class Ioc(object):
+    serializer = JsonSerializer()
+
     client_email_store = TinyDbEmailStore(
         store_location=AppConfig.CLIENT_EMAIL_STORE)
 
-    received_email_store = TinyDbEmailStore(
-        store_location=AppConfig.RECEIVED_EMAIL_STORE)
+    received_email_store = AzureEmailStore(
+        search_auth=AzureAuth(
+            account=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_NAME,
+            key=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_KEY),
+        storage_auth=AzureBlobAuth(
+            account=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_NAME,
+            key=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_KEY,
+            container=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_CONTAINER),
+        serializer=serializer)
 
     email_receiver = SendGridEmailReceiver()
 
@@ -37,7 +48,7 @@ class Ioc(object):
             AppConfig.STORAGE_UPLOAD_FORMAT,
             AppConfig.STORAGE_DOWNLOAD_FORMAT,
             AppConfig.EMAIL_HOST_FORMAT.format('')),
-        serializer=JsonSerializer())
+        serializer=serializer)
 
 
 def create_app():
