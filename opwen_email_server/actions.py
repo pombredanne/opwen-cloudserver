@@ -14,7 +14,6 @@ class ReceiveEmail(object):
 
         """
         received_email = self._email_receiver.parse_email(request)
-        received_email['sent_at'] = None
         self._email_store.create([received_email])
 
 

@@ -3,11 +3,9 @@ from logging.handlers import TimedRotatingFileHandler
 
 from flask import Flask
 from opwen_domain.email.azure import AzureEmailStore
-from opwen_domain.email.tinydb import TinyDbEmailStore
 from opwen_domain.mailbox.sendgrid import SendGridEmailReceiver
 from opwen_domain.mailbox.sendgrid import SendGridEmailSender
 from opwen_domain.sync.azure import AzureAuth
-from opwen_domain.sync.azure import AzureBlobAuth
 from opwen_domain.sync.azure import MultiClientAzureSync
 from opwen_infrastructure.serialization.json import JsonSerializer
 
@@ -17,14 +15,15 @@ from opwen_email_server.config import AppConfig
 class Ioc(object):
     serializer = JsonSerializer()
 
-    client_email_store = TinyDbEmailStore(
-        store_location=AppConfig.CLIENT_EMAIL_STORE)
+    client_email_store = AzureEmailStore(
+        auth=AzureAuth(
+            account=AppConfig.CLIENT_EMAIL_STORAGE_ACCOUNT_NAME,
+            key=AppConfig.CLIENT_EMAIL_STORAGE_ACCOUNT_KEY,
+            container=AppConfig.CLIENT_EMAIL_STORAGE_ACCOUNT_CONTAINER),
+        serializer=serializer)
 
     received_email_store = AzureEmailStore(
-        search_auth=AzureAuth(
-            account=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_NAME,
-            key=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_KEY),
-        storage_auth=AzureBlobAuth(
+        auth=AzureAuth(
             account=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_NAME,
             key=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_KEY,
             container=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_CONTAINER),
@@ -36,7 +35,7 @@ class Ioc(object):
         apikey=AppConfig.SENDGRID_ACCOUNT_KEY)
 
     email_sync = MultiClientAzureSync(
-        auth=AzureBlobAuth(
+        auth=AzureAuth(
             account=AppConfig.STORAGE_ACCOUNT_NAME,
             key=AppConfig.STORAGE_ACCOUNT_KEY,
             container=AppConfig.STORAGE_CONTAINER),
