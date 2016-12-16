@@ -3,10 +3,10 @@ from opwen_infrastructure.flask import debug_route
 from opwen_infrastructure.logging import log_execution
 
 from opwen_email_server import app
+from opwen_email_server.actions import DownloadEmailsFromClients
+from opwen_email_server.actions import UploadEmailsToClients
 from opwen_email_server.actions import ReceiveEmail
-from opwen_email_server.crons import client_email_download
-from opwen_email_server.crons import client_email_send
-from opwen_email_server.crons import client_email_upload
+from opwen_email_server.actions import SendEmailsFromClients
 
 
 @app.route('/inbox', methods=['POST'])
@@ -22,6 +22,10 @@ def inbox():
 
 @debug_route(app, '/download')
 def download():
+    client_email_download = DownloadEmailsFromClients(
+        email_sync=app.ioc.email_sync,
+        email_store=app.ioc.client_email_store)
+
     client_email_download()
 
     return 'OK'
@@ -29,6 +33,10 @@ def download():
 
 @debug_route(app, '/send')
 def send():
+    client_email_send = SendEmailsFromClients(
+        email_sender=app.ioc.email_sender,
+        email_store=app.ioc.client_email_store)
+
     client_email_send()
 
     return 'OK'
@@ -36,6 +44,10 @@ def send():
 
 @debug_route(app, '/upload')
 def upload():
+    client_email_upload = UploadEmailsToClients(
+        email_store=app.ioc.received_email_store,
+        email_sync=app.ioc.email_sync)
+
     client_email_upload()
 
     return 'OK'
