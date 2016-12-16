@@ -67,6 +67,7 @@ def create_app():
     app.logger.addHandler(logger)
     app.logger.setLevel(AppConfig.LOG_LEVEL)
 
-    app.logger.info('config: {}'.format(dumps(app.config, indent=2, sort_keys=True)))
+    config = {str(k): str(v) for (k, v) in app.config.items()}
+    app.logger.info('config: {}'.format(dumps(config, indent=2, sort_keys=True)))
 
     return app
