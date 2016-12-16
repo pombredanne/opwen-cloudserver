@@ -1,3 +1,4 @@
+from json import dumps
 from logging import Formatter
 from logging.handlers import TimedRotatingFileHandler
 
@@ -65,5 +66,7 @@ def create_app():
     logger.setFormatter(Formatter(AppConfig.LOG_FORMAT))
     app.logger.addHandler(logger)
     app.logger.setLevel(AppConfig.LOG_LEVEL)
+
+    app.logger.info('config: {}'.format(dumps(app.config, indent=2, sort_keys=True)))
 
     return app
