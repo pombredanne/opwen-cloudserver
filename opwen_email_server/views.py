@@ -1,4 +1,6 @@
+import os
 from flask import request
+from flask import send_from_directory
 from opwen_infrastructure.flask import debug_route
 from opwen_infrastructure.logging import log_execution
 
@@ -51,6 +53,14 @@ def upload():
     client_email_upload()
 
     return 'OK'
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        directory=os.path.join(app.root_path, 'static'),
+        filename='favicon.ico',
+        mimetype='image/vnd.microsoft.icon')
 
 
 @app.errorhandler(404)
