@@ -55,7 +55,7 @@ def upload():
 
 @app.errorhandler(404)
 def _on_404(code_or_exception):
-    app.logger.error(code_or_exception)
+    app.logger.warning('404: %s', request.path)
     return code_or_exception
 
 
