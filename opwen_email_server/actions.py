@@ -59,8 +59,8 @@ class SendEmailsFromClients(object):
         self._email_sender = email_sender
 
     def __call__(self):
-        sent = []
+        sent_ids = []
         for email in self._email_store.pending():
             if self._email_sender.send_email(email):
-                sent.append(email)
-        self._email_store.mark_sent(sent)
+                sent_ids.append(email['_uid'])
+        self._email_store.mark_sent(sent_ids)
