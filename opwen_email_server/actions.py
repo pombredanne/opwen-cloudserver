@@ -28,9 +28,9 @@ class UploadEmailsToClients(object):
         self._email_sync = email_sync
 
     def __call__(self):
-        emails = list(self._email_store.pending())
-        self._email_sync.upload(emails)
-        self._email_store.mark_sent(emails)
+        pending = self._email_store.pending()
+        uploaded = self._email_sync.upload(pending)
+        self._email_store.mark_sent(uploaded)
 
 
 class DownloadEmailsFromClients(object):
