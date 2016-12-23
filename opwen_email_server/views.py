@@ -63,6 +63,14 @@ def favicon():
         mimetype='image/vnd.microsoft.icon')
 
 
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory(
+        directory=os.path.join(app.root_path, 'static'),
+        filename='robots.txt',
+        mimetype='text/plain')
+
+
 @app.errorhandler(404)
 def _on_404(code_or_exception):
     app.logger.warning('404: %s', request.path)
