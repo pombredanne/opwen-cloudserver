@@ -30,6 +30,6 @@ class AppConfig(OpwenConfig):
     DOWNLOAD_CLIENT_EMAILS_HOUR_UTC = (OpwenConfig.EMAIL_SYNC_HOUR_UTC + 1) % 24
     SEND_CLIENT_EMAILS_HOUR_UTC = (DOWNLOAD_CLIENT_EMAILS_HOUR_UTC + 1) % 24
 
-    LOG_FILE = path.join(state_basedir, 'app.log')
+    APP_LOG_FILE = path.join(state_basedir, 'app.log')
     LOG_FORMAT = '%(asctime)s\t%(levelname)s\t%(pathname)s:%(lineno)d\t%(message)s'
     LOG_LEVEL = DEBUG

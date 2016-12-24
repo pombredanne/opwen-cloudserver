@@ -62,7 +62,7 @@ def create_app():
     app.config.from_object(AppConfig)
     app.ioc = Ioc()
 
-    logger = TimedRotatingFileHandler(filename=AppConfig.LOG_FILE,
+    logger = TimedRotatingFileHandler(filename=AppConfig.APP_LOG_FILE,
                                       when='H', interval=1, delay=True,
                                       utc=True, encoding='utf-8')
     logger.setFormatter(Formatter(AppConfig.LOG_FORMAT))
