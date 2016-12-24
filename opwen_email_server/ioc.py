@@ -1,6 +1,6 @@
 from json import dumps
 from logging import Formatter
-from logging.handlers import TimedRotatingFileHandler
+from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from opwen_domain.email.azure import AzureEmailStore
@@ -62,11 +62,11 @@ def create_app():
     app.config.from_object(AppConfig)
     app.ioc = Ioc()
 
-    logger = TimedRotatingFileHandler(filename=AppConfig.APP_LOG_FILE,
-                                      when='H', interval=1, delay=True,
-                                      utc=True, encoding='utf-8')
-    logger.setFormatter(Formatter(AppConfig.LOG_FORMAT))
-    app.logger.addHandler(logger)
+    handler = RotatingFileHandler(filename=AppConfig.APP_LOG_FILE,
+                                  maxBytes=100 * 1024 * 1024,  # 100 MB
+                                  backupCount=10, encoding='utf-8')
+    handler.setFormatter(Formatter(AppConfig.LOG_FORMAT))
+    app.logger.addHandler(handler)
     app.logger.setLevel(AppConfig.LOG_LEVEL)
 
     config = {str(k): str(v) for (k, v) in app.config.items()}
