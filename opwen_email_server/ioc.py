@@ -8,27 +8,29 @@ from opwen_domain.mailbox.sendgrid import SendGridEmailReceiver
 from opwen_domain.mailbox.sendgrid import SendGridEmailSender
 from opwen_domain.sync.azure import AzureAuth
 from opwen_domain.sync.azure import MultiClientAzureSync
+from opwen_infrastructure.serialization.gzip import GzipSerializerDecorator
 from opwen_infrastructure.serialization.json import JsonSerializer
 
 from opwen_email_server.config import AppConfig
 
 
 class Ioc(object):
-    serializer = JsonSerializer()
+    client_serializer = JsonSerializer()
+    server_serializer = GzipSerializerDecorator(JsonSerializer())
 
     client_email_store = AzureEmailStore(
         auth=AzureAuth(
             account=AppConfig.CLIENT_EMAIL_STORAGE_ACCOUNT_NAME,
             key=AppConfig.CLIENT_EMAIL_STORAGE_ACCOUNT_KEY,
             container=AppConfig.CLIENT_EMAIL_STORAGE_ACCOUNT_CONTAINER),
-        serializer=serializer)
+        serializer=server_serializer)
 
     received_email_store = AzureEmailStore(
         auth=AzureAuth(
             account=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_NAME,
             key=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_KEY,
             container=AppConfig.RECEIVED_EMAIL_STORAGE_ACCOUNT_CONTAINER),
-        serializer=serializer)
+        serializer=server_serializer)
 
     email_receiver = SendGridEmailReceiver()
 
@@ -48,7 +50,7 @@ class Ioc(object):
             AppConfig.STORAGE_UPLOAD_FORMAT,
             AppConfig.STORAGE_DOWNLOAD_FORMAT,
             AppConfig.EMAIL_HOST_FORMAT.format('')),
-        serializer=serializer)
+        serializer=client_serializer)
 
 
 def create_app():
