@@ -1,4 +1,6 @@
+from logging import Formatter
 from logging import getLogger
+from logging.handlers import RotatingFileHandler
 
 from flask_script import Command
 
@@ -13,8 +15,13 @@ from opwen_infrastructure.cron import CronCommandMixin
 
 class SyncDaemonCommand(CronCommandMixin, Command):
     def __init__(self):
-        logger = getLogger()
+        logger = getLogger(self.__class__.__name__)
+        handler = RotatingFileHandler(filename=AppConfig.DAEMON_LOG_FILE,
+                                      maxBytes=100 * 1024 * 1024,  # 100 MB
+                                      backupCount=10, encoding='utf-8')
+        handler.setFormatter(Formatter(AppConfig.LOG_FORMAT))
         logger.setLevel(AppConfig.LOG_LEVEL)
+        logger.addHandler(handler)
 
         CronCommandMixin.__init__(
             self,
