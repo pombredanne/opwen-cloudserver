@@ -1,7 +1,6 @@
 import os
 from flask import request
 from flask import send_from_directory
-from opwen_infrastructure.flask import debug_route
 from opwen_infrastructure.logging import log_execution
 
 from opwen_email_server import app
@@ -9,20 +8,24 @@ from opwen_email_server.actions import DownloadEmailsFromClients
 from opwen_email_server.actions import UploadEmailsToClients
 from opwen_email_server.actions import ReceiveEmail
 from opwen_email_server.actions import SendEmailsFromClients
+from opwen_email_server.login import admin_required
 
 
 @app.route('/inbox', methods=['POST'])
+@log_execution(app.logger)
 def inbox():
-    receive_email = log_execution(app.logger)(ReceiveEmail(
+    receive_email = ReceiveEmail(
         email_receiver=app.ioc.email_receiver,
-        email_store=app.ioc.received_email_store))
+        email_store=app.ioc.received_email_store)
 
     receive_email(request)
 
     return 'OK'
 
 
-@debug_route(app, '/download')
+@app.route('/download')
+@admin_required
+@log_execution(app.logger)
 def download():
     client_email_download = DownloadEmailsFromClients(
         email_sync=app.ioc.email_sync,
@@ -33,7 +36,9 @@ def download():
     return 'OK'
 
 
-@debug_route(app, '/send')
+@app.route('/send')
+@admin_required
+@log_execution(app.logger)
 def send():
     client_email_send = SendEmailsFromClients(
         email_sender=app.ioc.email_sender,
@@ -44,7 +49,9 @@ def send():
     return 'OK'
 
 
-@debug_route(app, '/upload')
+@app.route('/upload')
+@admin_required
+@log_execution(app.logger)
 def upload():
     client_email_upload = UploadEmailsToClients(
         email_store=app.ioc.received_email_store,

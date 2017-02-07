@@ -61,7 +61,7 @@ def create_app():
     app.config.from_object(AppConfig)
     app.ioc = Ioc()
 
-    handler = RotatingFileHandler(filename=AppConfig.APP_LOG_FILE,
+    handler = RotatingFileHandler(filename=AppConfig.LOG_FILE,
                                   maxBytes=100 * 1024 * 1024,  # 100 MB
                                   backupCount=10, encoding='utf-8')
     handler.setFormatter(Formatter(AppConfig.LOG_FORMAT))
