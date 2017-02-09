@@ -1,8 +1,8 @@
 Opwen cloudserver
 =================
 
-.. image:: https://travis-ci.org/OPWEN/opwen-cloudserver.svg?branch=master
-  :target: https://travis-ci.org/OPWEN/opwen-cloudserver
+.. image:: https://travis-ci.org/ascoderu/opwen-cloudserver.svg?branch=master
+  :target: https://travis-ci.org/ascoderu/opwen-cloudserver
 
 .. image:: https://img.shields.io/pypi/v/opwen_email_server.svg
   :target: https://pypi.python.org/pypi/opwen_email_server/
@@ -11,7 +11,7 @@ What's this?
 ------------
 
 This repository contains the source code for the Opwen cloud server. Its purpose
-is to connect the `application <https://github.com/OPWEN/opwen-webapp>`_ running
+is to connect the `application <https://github.com/ascoderu/opwen-webapp>`_ running
 on the Opwen Lokole devices to the rest of the world.
 
 The server has two main responsibilities:
@@ -20,13 +20,13 @@ The server has two main responsibilities:
    forward them to the appropriate Lokole device.
 2. Send new emails created by Lokole users to the rest of the internet.
 
-This package is intended to run on an Ubuntu server. There is a `script <https://github.com/OPWEN/opwen-setup>`_
+This package is intended to run on an Ubuntu server. There is a `script <https://github.com/ascoderu/opwen-setup>`_
 to set up a server with all the bits and pieces necessary for deployment.
 
 Technical overview
 ------------------
 
-Can be found in the `opwen-shared readme <https://github.com/OPWEN/opwen-shared/blob/master/README.rst>`_.
+Can be found in the `opwen-shared readme <https://github.com/ascoderu/opwen-shared/blob/master/README.rst>`_.
 
 Development setup
 -----------------
@@ -35,7 +35,7 @@ First, get the source code.
 
 .. sourcecode :: sh
 
-  git clone git@github.com:OPWEN/opwen-cloudserver.git
+  git clone git@github.com:ascoderu/opwen-cloudserver.git
 
 Second, install the dependencies for the package and verify your checkout by
 running the tests.
