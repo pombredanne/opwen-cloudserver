@@ -23,5 +23,5 @@ class AppConfig(OpwenConfig):
     SENDGRID_ACCOUNT_KEY = getenv('OPWEN_EMAIL_ACCOUNT_KEY')
 
     LOG_FILE = path.join(state_basedir, 'app.log')
-    LOG_FORMAT = '%(asctime)s\t%(levelname)s\t%(pathname)s:%(lineno)d\t%(message)s'
+    LOG_FORMAT = '%(asctime)s\t%(levelname)s\t%(message)s'
     LOG_LEVEL = DEBUG
