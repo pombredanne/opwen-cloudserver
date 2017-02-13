@@ -3,6 +3,6 @@ Flask==0.11.1
 PyYAML==3.12
 azure-storage==0.32.0
 gunicorn==19.6.0
-opwen_shared==0.0.38
+opwen_shared==0.0.39
 pytz==2016.7
 sendgrid==3.4.0
