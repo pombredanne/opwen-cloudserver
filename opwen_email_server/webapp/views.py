@@ -3,8 +3,7 @@ import os
 from flask import request
 from flask import send_from_directory
 
-from opwen_infrastructure.logging import log_execution
-
+from opwen_email_server.util.logging import log_execution
 from opwen_email_server.webapp import app
 from opwen_email_server.webapp.actions import DownloadEmailsFromClients
 from opwen_email_server.webapp.actions import ReceiveEmail

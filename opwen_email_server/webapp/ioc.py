@@ -8,9 +8,9 @@ from opwen_domain.mailbox.sendgrid import SendGridEmailReceiver
 from opwen_domain.mailbox.sendgrid import SendGridEmailSender
 from opwen_domain.sync.azure import AzureAuth
 from opwen_domain.sync.azure import MultiClientAzureSync
-from opwen_infrastructure.serialization.gzip import GzipSerializerDecorator
 from opwen_infrastructure.serialization.json import JsonSerializer
 
+from opwen_email_server.util.serialization.gzip import GzipSerializerDecorator
 from opwen_email_server.webapp.config import AppConfig
 
 
