@@ -1,2 +1,2 @@
 include requirements.txt
-recursive-include opwen_email_server/static *
+recursive-include opwen_email_server/webapp/static *

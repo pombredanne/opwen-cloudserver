@@ -2,6 +2,7 @@ from logging import Formatter
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
+
 from opwen_domain.email.azure import AzureEmailStore
 from opwen_domain.mailbox.sendgrid import SendGridEmailReceiver
 from opwen_domain.mailbox.sendgrid import SendGridEmailSender
@@ -10,7 +11,7 @@ from opwen_domain.sync.azure import MultiClientAzureSync
 from opwen_infrastructure.serialization.gzip import GzipSerializerDecorator
 from opwen_infrastructure.serialization.json import JsonSerializer
 
-from opwen_email_server.config import AppConfig
+from opwen_email_server.webapp.config import AppConfig
 
 
 class Ioc(object):

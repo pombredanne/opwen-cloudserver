@@ -3,7 +3,7 @@ from functools import wraps
 from flask import abort
 from flask import request
 
-from opwen_email_server import app
+from opwen_email_server.webapp import app
 
 
 def admin_required(func):

@@ -1,14 +1,16 @@
 import os
+
 from flask import request
 from flask import send_from_directory
+
 from opwen_infrastructure.logging import log_execution
 
-from opwen_email_server import app
-from opwen_email_server.actions import DownloadEmailsFromClients
-from opwen_email_server.actions import UploadEmailsToClients
-from opwen_email_server.actions import ReceiveEmail
-from opwen_email_server.actions import SendEmailsFromClients
-from opwen_email_server.login import admin_required
+from opwen_email_server.webapp import app
+from opwen_email_server.webapp.actions import DownloadEmailsFromClients
+from opwen_email_server.webapp.actions import ReceiveEmail
+from opwen_email_server.webapp.actions import SendEmailsFromClients
+from opwen_email_server.webapp.actions import UploadEmailsToClients
+from opwen_email_server.webapp.login import admin_required
 
 
 @app.route('/inbox', methods=['POST'])
