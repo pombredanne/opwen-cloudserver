@@ -1,4 +1,4 @@
-import os
+from os import path
 
 from flask import request
 from flask import send_from_directory
@@ -66,7 +66,7 @@ def upload():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(
-        directory=os.path.join(app.root_path, 'static'),
+        directory=path.join(app.root_path, 'static'),
         filename='favicon.ico',
         mimetype='image/vnd.microsoft.icon')
 
@@ -74,7 +74,7 @@ def favicon():
 @app.route('/robots.txt')
 def robots():
     return send_from_directory(
-        directory=os.path.join(app.root_path, 'static'),
+        directory=path.join(app.root_path, 'static'),
         filename='robots.txt',
         mimetype='text/plain')
 
